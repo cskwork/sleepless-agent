@@ -1,0 +1,31 @@
+{
+  "name": "distributed-task-queue",
+  "version": "1.0.0",
+  "description": "A distributed task queue system with priority scheduling, worker pools, and real-time monitoring",
+  "private": true,
+  "workspaces": [
+    "server",
+    "worker",
+    "dashboard"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:worker\" \"npm run dev:dashboard\"",
+    "dev:server": "npm run dev --workspace=server",
+    "dev:worker": "npm run dev --workspace=worker",
+    "dev:dashboard": "npm run dev --workspace=dashboard",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.54.0",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

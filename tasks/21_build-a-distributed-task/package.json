@@ -1,0 +1,20 @@
+{
+  "name": "distributed-task-queue",
+  "version": "1.0.0",
+  "description": "Distributed task queue system with priority scheduling, retry mechanisms, and monitoring dashboard",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "dev:core": "npm run dev -w @dtq/core",
+    "dev:server": "npm run dev -w @dtq/server",
+    "dev:dashboard": "npm run dev -w @dtq/dashboard",
+    "start:server": "npm run start -w @dtq/server"
+  },
+  "keywords": ["task-queue", "distributed", "priority", "retry", "dlq", "monitoring"],
+  "author": "",
+  "license": "MIT"
+}
