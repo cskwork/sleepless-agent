@@ -1,0 +1,52 @@
+{
+  "name": "http-interceptor-cli",
+  "version": "1.0.0",
+  "description": "A sophisticated HTTP/HTTPS request interceptor and debugger CLI tool",
+  "main": "dist/index.js",
+  "bin": {
+    "http-interceptor": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs --clean",
+    "dev": "tsup src/index.ts --format cjs --watch",
+    "start": "node dist/index.js",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "http",
+    "https",
+    "proxy",
+    "interceptor",
+    "debugger",
+    "cli",
+    "mock",
+    "traffic"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.0.0",
+    "ink": "^4.4.1",
+    "react": "^18.2.0",
+    "node-forge": "^1.3.1",
+    "js-yaml": "^4.1.0",
+    "zod": "^3.22.4",
+    "chalk": "^4.1.2",
+    "nanoid": "^3.3.7",
+    "micromatch": "^4.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.2.48",
+    "@types/node-forge": "^1.3.11",
+    "@types/js-yaml": "^4.0.9",
+    "@types/micromatch": "^4.0.6",
+    "typescript": "^5.3.3",
+    "tsup": "^8.0.1",
+    "vitest": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
