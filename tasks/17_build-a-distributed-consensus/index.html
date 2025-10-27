@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distributed Consensus Algorithm Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Distributed Consensus Algorithm Visualizer</h1>
+            <p class="subtitle">Interactive simulation of Raft, Paxos, and Two-Phase Commit protocols</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Control Panel -->
+            <aside class="control-panel">
+                <section class="panel-section">
+                    <h3>Algorithm Selection</h3>
+                    <select id="algorithm-select" class="control-select">
+                        <option value="raft">Raft Consensus</option>
+                        <option value="paxos">Paxos Consensus</option>
+                        <option value="2pc">Two-Phase Commit (2PC)</option>
+                    </select>
+                </section>
+
+                <section class="panel-section">
+                    <h3>Playback Controls</h3>
+                    <div class="button-group">
+                        <button id="btn-play" class="btn btn-primary">Play</button>
+                        <button id="btn-pause" class="btn btn-secondary">Pause</button>
+                        <button id="btn-step" class="btn btn-secondary">Step</button>
+                        <button id="btn-reset" class="btn btn-danger">Reset</button>
+                    </div>
+                    <div class="speed-control">
+                        <label for="speed-slider">Speed: <span id="speed-value">1x</span></label>
+                        <input type="range" id="speed-slider" min="0.25" max="5" step="0.25" value="1">
+                    </div>
+                </section>
+
+                <section class="panel-section">
+                    <h3>Cluster Configuration</h3>
+                    <div class="node-control">
+                        <label for="node-count">Number of Nodes: <span id="node-count-value">5</span></label>
+                        <input type="range" id="node-count" min="3" max="7" step="1" value="5">
+                    </div>
+                    <button id="btn-apply-nodes" class="btn btn-primary btn-full">Apply Changes</button>
+                </section>
+
+                <section class="panel-section">
+                    <h3>Scenario Controls</h3>
+                    <div class="button-group-vertical">
+                        <button id="btn-start-election" class="btn btn-secondary btn-full">Trigger Election</button>
+                        <button id="btn-add-entry" class="btn btn-secondary btn-full">Add Log Entry</button>
+                        <button id="btn-create-partition" class="btn btn-warning btn-full">Create Partition</button>
+                        <button id="btn-heal-partition" class="btn btn-success btn-full">Heal Partition</button>
+                        <button id="btn-crash-node" class="btn btn-danger btn-full">Crash Random Node</button>
+                        <button id="btn-recover-node" class="btn btn-success btn-full">Recover Node</button>
+                    </div>
+                </section>
+
+                <section class="panel-section">
+                    <h3>Presets</h3>
+                    <select id="scenario-preset" class="control-select">
+                        <option value="">Select Scenario...</option>
+                        <option value="normal">Normal Operation</option>
+                        <option value="leader-failure">Leader Failure</option>
+                        <option value="network-partition">Network Partition</option>
+                        <option value="split-brain">Split Brain</option>
+                        <option value="cascade-failure">Cascade Failure</option>
+                    </select>
+                    <button id="btn-run-preset" class="btn btn-primary btn-full">Run Preset</button>
+                </section>
+            </aside>
+
+            <!-- Visualization Canvas -->
+            <main class="visualization-area">
+                <canvas id="canvas" width="1200" height="800"></canvas>
+                <div id="tooltip" class="tooltip"></div>
+            </main>
+
+            <!-- State Panel -->
+            <aside class="state-panel">
+                <section class="panel-section">
+                    <h3>Cluster State</h3>
+                    <div id="cluster-state" class="state-display">
+                        <div class="state-item">
+                            <span class="label">Algorithm:</span>
+                            <span id="current-algorithm" class="value">Raft</span>
+                        </div>
+                        <div class="state-item">
+                            <span class="label">Leader:</span>
+                            <span id="current-leader" class="value">None</span>
+                        </div>
+                        <div class="state-item">
+                            <span class="label">Term/Round:</span>
+                            <span id="current-term" class="value">0</span>
+                        </div>
+                        <div class="state-item">
+                            <span class="label">Committed:</span>
+                            <span id="committed-entries" class="value">0</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel-section">
+                    <h3>Selected Node</h3>
+                    <div id="node-state" class="state-display">
+                        <p class="no-selection">Click a node to view its state</p>
+                    </div>
+                </section>
+
+                <section class="panel-section">
+                    <h3>Event Log</h3>
+                    <div id="event-log" class="event-log">
+                        <div class="log-entry">System initialized</div>
+                    </div>
+                </section>
+
+                <section class="panel-section">
+                    <h3>Legend</h3>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color leader"></div>
+                            <span>Leader</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color candidate"></div>
+                            <span>Candidate</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color follower"></div>
+                            <span>Follower</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color crashed"></div>
+                            <span>Crashed</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color partitioned"></div>
+                            <span>Partitioned</span>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="src/core/EventSystem.js"></script>
+    <script src="src/core/MessageQueue.js"></script>
+    <script src="src/core/SimulationEngine.js"></script>
+    <script src="src/algorithms/Node.js"></script>
+    <script src="src/algorithms/TwoPhaseCommit.js"></script>
+    <script src="src/algorithms/Raft.js"></script>
+    <script src="src/algorithms/Paxos.js"></script>
+    <script src="src/visualization/Renderer.js"></script>
+    <script src="src/visualization/NodeRenderer.js"></script>
+    <script src="src/visualization/MessageRenderer.js"></script>
+    <script src="src/ui/ControlPanel.js"></script>
+    <script src="src/ui/StatePanel.js"></script>
+    <script src="src/main.js"></script>
+</body>
+</html>
